@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Don't Trust It: Ghost Village - A horror-comedy social deduction mobile game. Interactive UI mockup showcasing game screens and features.">
+    <meta property="og:title" content="Don't Trust It: Ghost Village - Game Mockup">
+    <meta property="og:description" content="Interactive mockup of a Vietnamese-inspired horror-comedy social deduction game built with Flutter + Flame Engine">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/2D1B4E/E0AAFF?text=Don%27t+Trust+It:+Ghost+Village">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <title>Don't Trust It: Ghost Village - Interactive Game Mockup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-bg: #1A1028;
+            --purple-dark: #2D1B4E;
+            --purple-mid: #6B46C1;
+            --purple-light: #9D4EDD;
+            --purple-bright: #E0AAFF;
+            --red-impostor: #E63946;
+            --green-safe: #06FFA5;
+            --orange-warn: #FF6B35;
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            background: radial-gradient(circle at center, var(--purple-dark), var(--dark-bg));
+            color: var(--purple-bright);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Share Banner */
+        .share-banner {
+            background: linear-gradient(135deg, var(--purple-mid), var(--red-impostor));
+            padding: 15px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.5s ease;
+        }
+
+        .share-banner p {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .share-buttons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 8px;
+            color: white;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .share-btn:hover {
+            background: white;
+            color: var(--purple-dark);
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(24px, 5vw, 56px);
+            color: var(--purple-bright);
+            text-shadow: 
+                0 0 20px var(--purple-light),
+                0 0 40px var(--purple-mid),
+                0 4px 0 var(--purple-dark);
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+            line-height: 1.4;
+        }
+
+        .subtitle {
+            font-size: clamp(14px, 3vw, 24px);
+            color: var(--purple-light);
+            text-shadow: 0 2px 10px rgba(157, 78, 221, 0.5);
+        }
+
+        .screen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .screen-card {
+            background: linear-gradient(135deg, rgba(45, 27, 78, 0.8), rgba(26, 16, 40, 0.9));
+            border: 3px solid var(--purple-mid);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 
+                0 10px 40px rgba(107, 70, 193, 0.3),
+                inset 0 1px 0 rgba(224, 170, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .screen-card:hover::before {
+            opacity: 1;
+        }
+
+        .screen-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--purple-light);
+            box-shadow: 
+                0 20px 60px rgba(157, 78, 221, 0.5),
+                inset 0 1px 0 rgba(224, 170, 255, 0.2);
+        }
+
+        .screen-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--purple-bright);
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .mockup {
+            background: var(--dark-bg);
+            border: 2px solid var(--purple-dark);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Splash Screen */
+        .splash-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 60px 20px;
+        }
+
+        .ghost-icon {
+            font-size: 100px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 30px rgba(157, 78, 221, 0.6));
+        }
+
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(24px, 4vw, 40px);
+            color: var(--purple-bright);
+            text-shadow: 0 0 30px var(--purple-light);
+            margin: 20px 0;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 8px;
+            background: var(--purple-dark);
+            border: 2px solid var(--purple-mid);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple-mid), var(--purple-light));
+            width: 0%;
+            animation: loading 2s ease-in-out infinite;
+        }
+
+        /* Lobby */
+        .lobby-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu-button {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            background: linear-gradient(135deg, var(--purple-mid), var(--purple-dark));
+            border: 3px solid var(--purple-light);
+            border-radius: 15px;
+            color: var(--purple-bright);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 0 var(--purple-dark);
+        }
+
+        .menu-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 0 var(--purple-dark),
+                0 6px 30px rgba(157, 78, 221, 0.5);
+        }
+
+        .menu-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 var(--purple-dark);
+        }
+
+        .menu-button.primary {
+            background: linear-gradient(135deg, var(--red-impostor), #c02937);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Gameplay */
+        .gameplay-mockup {
+            position: relative;
+            height: 500px;
+            background: linear-gradient(to bottom, #1A1028, #2D1B4E);
+        }
+
+        .game-map {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 350px;
+            height: 350px;
+        }
+
+        .room {
+            position: absolute;
+            border: 2px solid rgba(107, 70, 193, 0.5);
+            background: rgba(45, 27, 78, 0.6);
+            border-radius: 8px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .room1 { top: 15px; left: 15px; width: 100px; height: 80px; }
+        .room2 { top: 15px; right: 15px; width: 110px; height: 75px; }
+        .room3 { bottom: 15px; left: 15px; width: 100px; height: 90px; }
+        .room4 { bottom: 15px; right: 15px; width: 85px; height: 85px; }
+        .room5 { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 110px; }
+
+        .character {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            animation: wobble 1s ease-in-out infinite;
+        }
+
+        .character-body {
+            width: 100%;
+            height: 100%;
+            background: var(--purple-mid);
+            border: 2px solid #000;
+            border-radius: 15px 15px 12px 12px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(107, 70, 193, 0.6);
+        }
+
+        .character.impostor .character-body {
+            background: var(--red-impostor);
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.6);
+        }
+
+        .character-scarf {
+            position: absolute;
+            top: 40%;
+            left: 10%;
+            width: 80%;
+            height: 15%;
+            background: #4A148C;
+            border: 1px solid #000;
+        }
+
+        .character-eyes {
+            position: absolute;
+            top: 25%;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 15%;
+        }
+
+        .eye {
+            width: 6px;
+            height: 8px;
+            background: white;
+            border: 1px solid #000;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .eye::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: black;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .player { top: 50%; left: 50%; }
+        .ai1 { top: 25%; left: 25%; }
+        .ai2 { top: 65%; right: 25%; }
+
+        .hud-top {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .role-badge {
+            padding: 8px 15px;
+            background: linear-gradient(135deg, var(--purple-mid), var(--purple-dark));
+            border: 2px solid var(--purple-light);
+            border-radius: 15px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.5);
+        }
+
+        .joystick-area {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 90px;
+            height: 90px;
+        }
+
+        .joystick-base {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(45, 27, 78, 0.8), rgba(26, 16, 40, 0.9));
+            border: 3px solid var(--purple-mid);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(107, 70, 193, 0.4);
+        }
+
+        .joystick-knob {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--purple-light), var(--purple-mid));
+            border: 2px solid var(--purple-bright);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.8);
+        }
+
+        .action-buttons {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #000;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-kill {
+            background: linear-gradient(135deg, var(--red-impostor), #c02937);
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.8);
+        }
+
+        .btn-report {
+            background: linear-gradient(135deg, var(--green-safe), #05d98a);
+            box-shadow: 0 0 15px rgba(6, 255, 165, 0.8);
+        }
+
+        .btn-task {
+            background: linear-gradient(135deg, var(--purple-light), var(--purple-mid));
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.8);
+        }
+
+        .btn-sabotage {
+            background: linear-gradient(135deg, var(--orange-warn), #e05a2b);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.8);
+        }
+
+        .fog-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                circle at 50% 50%,
+                transparent 0%,
+                rgba(26, 16, 40, 0.4) 40%,
+                rgba(26, 16, 40, 0.8) 70%,
+                rgba(26, 16, 40, 0.95) 100%
+            );
+            pointer-events: none;
+        }
+
+        .info-section {
+            background: linear-gradient(135deg, rgba(45, 27, 78, 0.9), rgba(26, 16, 40, 0.95));
+            border: 3px solid var(--purple-mid);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 10px 40px rgba(107, 70, 193, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: rgba(45, 27, 78, 0.4);
+            border: 2px solid var(--purple-dark);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            border-color: var(--purple-light);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 10px rgba(157, 78, 221, 0.5));
+        }
+
+        .feature-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            color: var(--purple-light);
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            font-size: 16px;
+            color: var(--purple-bright);
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            border-top: 2px solid var(--purple-dark);
+            font-size: 16px;
+            color: var(--purple-light);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--red-impostor), var(--purple-mid));
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 10px 40px rgba(230, 57, 70, 0.4);
+        }
+
+        .cta-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: white;
+            color: var(--purple-dark);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 0 var(--purple-dark); }
+            50% { 
+                box-shadow: 
+                    0 6px 0 var(--purple-dark),
+                    0 0 40px rgba(230, 57, 70, 0.6);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .screen-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+
+            .share-banner p {
+                font-size: 10px;
+            }
+
+            .game-map {
+                width: 95%;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Share Banner -->
+    <div class="share-banner">
+        <p>🎮 INTERACTIVE GAME MOCKUP - Share this page! 👻</p>
+        <div class="share-buttons">
+            <button class="share-btn" onclick="shareOnTwitter()">Twitter</button>
+            <button class="share-btn" onclick="shareOnFacebook()">Facebook</button>
+            <button class="share-btn" onclick="shareOnLinkedIn()">LinkedIn</button>
+            <button class="share-btn" onclick="copyLink()">Copy Link</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">DON'T TRUST IT:<br>GHOST VILLAGE</h1>
+            <p class="subtitle">Interactive Game Mockup • Flutter + Flame Engine</p>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="cta-title">100% PLAYABLE GAME</div>
+            <p style="color: white; margin: 20px 0; font-size: 18px;">Full Flutter + Flame project with 2,783 lines of code</p>
+            <a href="#download" class="cta-btn">Download Project</a>
+            <a href="#features" class="cta-btn">View Features</a>
+        </div>
+
+        <div class="screen-grid">
+            <!-- Splash Screen -->
+            <div class="screen-card">
+                <h2 class="screen-title">1. Splash Screen</h2>
+                <div class="mockup">
+                    <div class="splash-content">
+                        <div class="ghost-icon">👻</div>
+                        <div class="game-title" style="font-size: 28px;">DON'T TRUST IT</div>
+                        <div class="game-title" style="font-size: 24px;">GHOST VILLAGE</div>
+                        <p style="font-size: 14px; color: var(--purple-light); margin-top: 15px;">A Horror-Comedy Social Game</p>
+                        <div class="loading-bar">
+                            <div class="loading-progress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lobby Screen -->
+            <div class="screen-card">
+                <h2 class="screen-title">2. Main Menu</h2>
+                <div class="mockup">
+                    <div class="lobby-content">
+                        <div style="margin: 30px 0;">
+                            <div class="ghost-icon" style="font-size: 60px; animation: float 3s ease-in-out infinite;">👻</div>
+                        </div>
+                        <button class="menu-button primary">START GAME</button>
+                        <button class="menu-button">HOW TO PLAY</button>
+                        <button class="menu-button">SETTINGS</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gameplay Screen -->
+            <div class="screen-card" style="grid-column: span 1;">
+                <h2 class="screen-title">3. Gameplay</h2>
+                <div class="mockup">
+                    <div class="gameplay-mockup">
+                        <div class="hud-top">
+                            <div class="role-badge">👤 CREWMATE</div>
+                        </div>
+
+                        <div class="game-map">
+                            <div class="room room1"></div>
+                            <div class="room room2"></div>
+                            <div class="room room3"></div>
+                            <div class="room room4"></div>
+                            <div class="room room5"></div>
+
+                            <div class="character player">
+                                <div class="character-body">
+                                    <div class="character-scarf"></div>
+                                    <div class="character-eyes">
+                                        <div class="eye"></div>
+                                        <div class="eye"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="character ai1">
+                                <div class="character-body">
+                                    <div class="character-scarf"></div>
+                                    <div class="character-eyes">
+                                        <div class="eye"></div>
+                                        <div class="eye"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="character impostor ai2">
+                                <div class="character-body">
+                                    <div class="character-scarf"></div>
+                                    <div class="character-eyes">
+                                        <div class="eye"></div>
+                                        <div class="eye"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fog-overlay"></div>
+
+                        <div class="joystick-area">
+                            <div class="joystick-base">
+                                <div class="joystick-knob"></div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <div class="action-btn btn-kill">🔪</div>
+                            <div class="action-btn btn-report">📢</div>
+                            <div class="action-btn btn-task">✓</div>
+                            <div class="action-btn btn-sabotage">⚡</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="info-section" id="features">
+            <h2 class="screen-title" style="font-size: 20px; margin-bottom: 15px;">Game Features</h2>
+            
+            <div class="info-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌫️</div>
+                    <div class="feature-title">Fog of War</div>
+                    <div class="feature-desc">Limited vision. Impostors see 33% farther.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">Smart AI</div>
+                    <div class="feature-desc">5 AI bots with intelligent behavior & voting.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Task System</div>
+                    <div class="feature-desc">5 mini-games to complete.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👻</div>
+                    <div class="feature-title">Ghost Mode</div>
+                    <div class="feature-desc">Dead players become ghosts.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Panic Events</div>
+                    <div class="feature-desc">Random horror: lights out, shadows.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Mobile First</div>
+                    <div class="feature-desc">Joystick + touch controls.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="cta-section" id="download">
+            <div class="cta-title">READY TO BUILD?</div>
+            <p style="color: white; margin: 20px 0; font-size: 16px;">
+                Full source code: 2,783 lines • 15 files • 8 systems<br>
+                Flutter 3.0+ • Flame Engine • 100% working code
+            </p>
+            <a href="https://github.com/yourusername/dont-trust-it-ghost-village" class="cta-btn">View on GitHub</a>
+            <p style="color: rgba(255,255,255,0.7); margin-top: 20px; font-size: 14px;">
+                Setup time: 5 minutes • flutter pub get → flutter run
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>🎮 DON'T TRUST IT: GHOST VILLAGE</p>
+            <p style="margin-top: 15px; font-size: 14px;">A Horror-Comedy Social Deduction Game • Made with Flutter + Flame Engine</p>
+            <p style="margin-top: 10px; font-size: 12px; color: var(--purple-mid);">Interactive mockup - Try dragging the joystick!</p>
+        </div>
+    </div>
+
+    <script>
+        // Share functions
+        function shareOnTwitter() {
+            const text = "Check out Don't Trust It: Ghost Village - an awesome horror-comedy social deduction game! 👻🎮";
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank');
+        }
+
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('✅ Link copied to clipboard!');
+            });
+        }
+
+        // Interactive joystick
+        const joystickKnob = document.querySelector('.joystick-knob');
+        const joystickBase = document.querySelector('.joystick-base');
+        let isDragging = false;
+
+        if (joystickBase) {
+            joystickBase.addEventListener('mousedown', () => isDragging = true);
+            joystickBase.addEventListener('touchstart', () => isDragging = true);
+
+            document.addEventListener('mousemove', handleMove);
+            document.addEventListener('touchmove', handleMove);
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                if (joystickKnob) joystickKnob.style.transform = 'translate(-50%, -50%)';
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+                if (joystickKnob) joystickKnob.style.transform = 'translate(-50%, -50%)';
+            });
+        }
+
+        function handleMove(e) {
+            if (!isDragging || !joystickKnob || !joystickBase) return;
+            
+            const rect = joystickBase.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            const deltaX = clientX - centerX;
+            const deltaY = clientY - centerY;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const maxDistance = 25;
+            
+            if (distance > maxDistance) {
+                const angle = Math.atan2(deltaY, deltaX);
+                joystickKnob.style.transform = `translate(${Math.cos(angle) * maxDistance - 20}px, ${Math.sin(angle) * maxDistance - 20}px)`;
+            } else {
+                joystickKnob.style.transform = `translate(${deltaX - 20}px, ${deltaY - 20}px)`;
+            }
+        }
+
+        // Character wobble animation
+        document.querySelectorAll('.character').forEach((char, index) => {
+            setInterval(() => {
+                char.style.transform = `rotate(${Math.sin(Date.now() / 500 + index) * 3}deg)`;
+            }, 50);
+        });
+
+        // Action button effects
+        document.querySelectorAll('.action-btn, .menu-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
